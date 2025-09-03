@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 const PhoneIcon = (props) => (
 	<svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" {...props}>
@@ -38,13 +38,50 @@ export default function Landing() {
 	const phone = '+91 98716 05858'
 	const baseUrl = import.meta.env.BASE_URL || '/'
 
+	const [timeLeftMs, setTimeLeftMs] = useState(0)
+
+	useEffect(() => {
+		const key = 'pepDeadlineMs'
+		const seventyTwoHoursMs = 72 * 60 * 60 * 1000
+		let deadlineMs = 0
+		try {
+			const stored = localStorage.getItem(key)
+			deadlineMs = stored ? parseInt(stored, 10) : 0
+			if (!deadlineMs || Number.isNaN(deadlineMs) || deadlineMs <= Date.now()) {
+				deadlineMs = Date.now() + seventyTwoHoursMs
+				localStorage.setItem(key, String(deadlineMs))
+			}
+		} catch {}
+
+		const update = () => {
+			const remaining = Math.max(0, deadlineMs - Date.now())
+			setTimeLeftMs(remaining)
+		}
+		update()
+		const id = setInterval(update, 1000)
+		return () => clearInterval(id)
+	}, [])
+
+	const formatDuration = (ms) => {
+		const totalSeconds = Math.floor(ms / 1000)
+		const seconds = totalSeconds % 60
+		const totalMinutes = Math.floor(totalSeconds / 60)
+		const minutes = totalMinutes % 60
+		const hours = Math.floor(totalMinutes / 60) // can exceed 24
+		const pad = (n) => String(n).padStart(2, '0')
+		return `${hours}h ${pad(minutes)}m ${pad(seconds)}s`
+	}
+
 	return (
 		<div>
 			<header className="sticky">
 				<div className="container" style={{ paddingTop: 10, paddingBottom: 10 }}>
 					<div className="top-alert" role="note" aria-live="polite" style={{ marginBottom: 10 }}>
 						<svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M10.29 3.86l-7.6 13.18A2 2 0 0 0 4.29 20h15.42a2 2 0 0 0 1.6-3l-7.6-13.18a2 2 0 0 0-3.42 0z" fill="currentColor"/></svg>
-						<strong>Urgent PEP within 72 hours.</strong> Start as soon as possible.
+						<strong>Urgent PEP within 72 hours.</strong>
+						<span style={{ marginLeft: 8 }}>
+							{timeLeftMs > 0 ? `Time left: ${formatDuration(timeLeftMs)}` : 'Window may have passed — call now.'}
+						</span>
 					</div>
 					<div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
 						<div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
