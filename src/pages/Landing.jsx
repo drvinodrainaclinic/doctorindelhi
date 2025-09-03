@@ -36,6 +36,7 @@ const Stat = ({ value, label }) => (
 
 export default function Landing() {
 	const phone = '+91 98716 05858'
+	const baseUrl = import.meta.env.BASE_URL || '/'
 
 	return (
 		<div>
@@ -47,7 +48,7 @@ export default function Landing() {
 					</div>
 					<div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
 						<div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-							<img src="/images/logo-doctor-in-delhi.svg" alt="Doctor in Delhi logo" width="160" height="36" style={{ display: 'block' }} />
+							<img src={`${baseUrl}images/logo-doctor-in-delhi.svg`} alt="Doctor in Delhi logo" width="160" height="36" style={{ display: 'block' }} />
 							<strong className="brand-text">Doctor in Delhi</strong>
 						</div>
 						<div style={{ display: 'flex', gap: 10 }}>
@@ -163,7 +164,7 @@ export default function Landing() {
 			{/* Doctor Profile */}
 			<section className="container" style={{ paddingTop: 0 }}>
 				<div className="card" style={{ display: 'grid', gap: 16, gridTemplateColumns: '140px 1fr', alignItems: 'center' }}>
-					<img src="/images/doctor.jpg" alt="Doctor profile photo" width="140" height="140" style={{ width: 140, height: 140, objectFit: 'cover', borderRadius: 16, border: '1px solid rgba(168,179,207,0.15)' }} />
+					<img src={`${baseUrl}images/doctor.jpg`} alt="Doctor profile photo" width="140" height="140" style={{ width: 140, height: 140, objectFit: 'cover', borderRadius: 16, border: '1px solid rgba(168,179,207,0.15)' }} />
 					<div>
 						<h3 style={{ margin: 0 }}>Dr. Vinod Raina</h3>
 						<div style={{ color: 'var(--muted)', marginBottom: 8 }}>SAFE HANDS MD • HIV & Sexology Specialist • 20+ years experience</div>
