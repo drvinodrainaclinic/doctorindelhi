@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:gh": "cross-env VITE_BASE=/doctorindelhi/ vite build",
     "preview": "vite preview --port 5173"
   },
   "dependencies": {
